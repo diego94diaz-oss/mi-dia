@@ -1,12 +1,13 @@
 /* Mi Día — service worker: network-first para el shell, con caché de respaldo
    para funcionar offline (los datos por-widget viven en localStorage). */
-const CACHE = "midia-v3";
+const CACHE = "midia-v4";
 const SHELL = [
   ".", "index.html", "manifest.json", "icon.svg",
   "css/styles.css",
-  "js/config.js", "js/core.js", "js/app.js",
+  "js/config.js", "js/core.js", "js/google.js", "js/app.js",
   "js/widgets/hero.js", "js/widgets/finanzas.js", "js/widgets/inversiones.js",
-  "js/widgets/kratos.js", "js/widgets/agenda.js", "js/widgets/tareas.js",
+  "js/widgets/kratos.js", "js/widgets/agenda.js", "js/widgets/correo.js",
+  "js/widgets/tareas.js",
   "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"
 ];
 

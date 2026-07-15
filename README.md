@@ -25,6 +25,7 @@ config pública en `js/config.js`, cero toolchain.
 | Inversiones | snapshot `data.json` del bucket privado `dashboard-data` | login Supabase (policy por UUID) |
 | Entrenamiento | tablas `workout_sets`/`exercises` de Kratos | login Supabase + RLS |
 | Agenda | Google Calendar API (readonly) | OAuth en el navegador (GIS) |
+| Correo | Gmail API (readonly) — urgentes de la bandeja Principal | mismo token OAuth que Agenda |
 | Clima | Open-Meteo (Lebu, Chile) | público, sin key |
 | Pendientes | tabla `tasks` (propia, CRUD) | login Supabase + RLS |
 

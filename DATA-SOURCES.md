@@ -134,6 +134,20 @@ Finanzas + Kratos + Inversiones. No se necesitan credenciales nuevas.
 - No se encontró instalación/URL en los repos. PREGUNTA ABIERTA; si no está
   disponible, la card se omite sin romper nada (así lo pide el spec).
 
+## Fuente 8 — Gmail (correos urgentes) — agregada 14-07-2026
+
+- **Gmail API readonly** directo desde el navegador, con el MISMO token OAuth
+  de la Agenda (módulo compartido `js/google.js`, scopes combinados
+  `calendar.readonly` + `gmail.readonly`; un solo consentimiento).
+- Consulta: `users/me/messages?q=in:inbox category:primary newer_than:7d`
+  (máx. 25) y `messages.get format=metadata` (From/Subject/Date) para los
+  primeros 15. Promociones/social quedan fuera por `category:primary`.
+- **Urgencia por heurística** (sin IA): STARRED +3, IMPORTANT +2, UNREAD +2;
+  top 5 con puntaje ≥ 2, orden por puntaje y recencia. Cada fila enlaza a
+  `mail.google.com/mail/u/0/#inbox/<id>` para responder al tiro.
+- Si el token guardado es de la versión solo-calendar (401/403), se borra y
+  ambas cards vuelven a "Conectar Google".
+
 ---
 
 ## Decisión de stack (alineada a las apps existentes)
