@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mi Día</title>
+<meta name="theme-color" content="#070a12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mi Día">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="brand">Mi <span>Día</span></div>
+  <div class="actions">
+    <button id="btn-refresh" class="icon-btn" title="Actualizar">⟳</button>
+    <button id="btn-logout" class="icon-btn" title="Cerrar sesión" style="display:none">⏻</button>
+  </div>
+</header>
+
+<section id="hero">
+  <div>
+    <div id="hero-saludo">Hola, Diego</div>
+    <div id="hero-fecha"></div>
+  </div>
+  <div id="hero-clock"></div>
+</section>
+
+<section id="w-hero" class="card">
+  <div class="card-body"></div>
+</section>
+
+<main id="grid">
+  <section id="w-finanzas" class="card">
+    <h2>💰 Finanzas</h2>
+    <div class="card-body"></div>
+  </section>
+  <section id="w-inversiones" class="card">
+    <h2>📈 Inversiones</h2>
+    <div class="card-body"></div>
+  </section>
+  <section id="w-kratos" class="card">
+    <h2>⚔️ Entrenamiento</h2>
+    <div class="card-body"></div>
+  </section>
+  <section id="w-agenda" class="card">
+    <h2>📅 Agenda</h2>
+    <div class="card-body"></div>
+  </section>
+  <section id="w-tareas" class="card">
+    <h2>✅ Pendientes</h2>
+    <div class="card-body"></div>
+  </section>
+</main>
+
+<div id="auth-overlay">
+  <div class="auth-box">
+    <h1>Mi <span style="color:var(--accent)">Día</span></h1>
+    <p>Inicia sesión con tu cuenta (la misma de Finanzas y Kratos).</p>
+    <input id="auth-email" type="email" placeholder="Email" value="diego94diaz@gmail.com" autocomplete="username">
+    <input id="auth-pass" type="password" placeholder="Contraseña" autocomplete="current-password">
+    <button id="auth-btn">Entrar</button>
+    <div id="auth-msg"></div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/core.js"></script>
+<script src="js/widgets/hero.js"></script>
+<script src="js/widgets/finanzas.js"></script>
+<script src="js/widgets/inversiones.js"></script>
+<script src="js/widgets/kratos.js"></script>
+<script src="js/widgets/agenda.js"></script>
+<script src="js/widgets/tareas.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
