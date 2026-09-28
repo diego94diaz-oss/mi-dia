@@ -166,3 +166,18 @@ comentado en ambos repos); ningún secreto en el repo.
 4. **Repo:** `diego94diaz-oss/mi-dia` → https://diego94diaz-oss.github.io/mi-dia/
 5. **Tabla `tasks`:** creada el 14-07-2026 en el proyecto compartido vía
    Management API (RLS `own_tasks`, índice `idx_tasks_user`).
+
+## Fuente 9 — Salud (datos mínimos) + barra "Mis apps" — agregada 28-09-2026
+
+- **Decisión de Diego:** Mi Día agrupa todas las apps (barra "Mis apps" en
+  `config.APPS`) y muestra solo 3 datos de salud: próximo control, último
+  peso y última presión. El detalle clínico vive únicamente en Mi Salud
+  (https://mi-salud.diego94diaz.workers.dev/).
+- **Consultas** (mismo Supabase, RLS por usuario):
+  `salud_registro?select=controles:data->controles` (solo la lista de
+  controles, no el registro completo) y la última fila de
+  `salud_mediciones` con `tipo=peso` y `tipo=presion`.
+- **Contrato:** depende de `controles[]` = `{fecha, texto, aprox}` dentro de
+  `salud_registro.data` (definido en `Salud/datos/salud-data.js`).
+- La caché local (`midia_w_salud`) guarda solo esos 3 datos.
+- "Inversiones (PC)" (http://127.0.0.1:5613/) se oculta en el celular.
