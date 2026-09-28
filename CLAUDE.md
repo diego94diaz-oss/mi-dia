@@ -144,3 +144,9 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
 - **Pendiente:** Diego no está conforme con el diseño oscuro; pidió rediseñarlo
   (probablemente con el mismo estilo claro de Mi Salud; esperando su confirmación).
 
+### 2026-09-28 — Card Salud con citas reales
+- Lee también `salud_citas` (citas que Diego agenda en Mi Salud) y muestra lo
+  más cercano entre esas citas (con hora y lugar) y los controles sugeridos
+  que aún no tienen cita (`control_id`). Indica "Próxima cita" o "Control
+  sugerido (sin agendar)". Service worker `midia-v6`.
+

@@ -181,3 +181,8 @@ comentado en ambos repos); ningún secreto en el repo.
   `salud_registro.data` (definido en `Salud/datos/salud-data.js`).
 - La caché local (`midia_w_salud`) guarda solo esos 3 datos.
 - "Inversiones (PC)" (http://127.0.0.1:5613/) se oculta en el celular.
+- **Actualización 28-09-2026:** también lee `salud_citas` (`fecha, hora,
+  titulo, lugar, control_id`). Contrato de controles: `controles[] = {id,
+  fecha, texto, aprox}`; un control con cita enlazada (`control_id`) no se
+  muestra como sugerido.
+
