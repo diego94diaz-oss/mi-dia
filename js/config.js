@@ -14,12 +14,24 @@ window.MIDIA_CONFIG = {
   // Clima — Open-Meteo (sin API key). Lebu, Región del Biobío, Chile.
   WEATHER: { lat: -37.6083, lon: -73.6533, tz: "America/Santiago", lugar: "Lebu" },
 
-  // Enlaces a las apps completas
+  // Enlaces a las apps completas (los widgets los usan en su "Abrir … →")
   LINKS: {
     finanzas:    "https://diego94diaz-oss.github.io/finanzas-personales/",
-    inversiones: "https://diego94diaz-oss.github.io/portafolio-dashboard/",
-    kratos:      "https://diego94diaz-oss.github.io/kratos-gym/"
+    inversiones: "https://mis-inversiones.github.io/",
+    kratos:      "https://diego94diaz-oss.github.io/kratos-gym/",
+    salud:       "https://mi-salud.diego94diaz.workers.dev/"
   },
+
+  // Barra "Mis apps": acceso directo a todo el ecosistema.
+  // soloPC: la app corre en el computador (servidor local) → se oculta en el celular.
+  APPS: [
+    { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://diego94diaz-oss.github.io/finanzas-personales/" },
+    { id: "inversiones", nombre: "Inversiones", icono: "📈", url: "https://mis-inversiones.github.io/" },
+    { id: "inv-local",   nombre: "Inversiones (PC)", icono: "🖥️", url: "http://127.0.0.1:5613/", soloPC: true,
+      nota: "App local para cargar movimientos. Requiere abrir iniciar.bat en la carpeta Inversiones." },
+    { id: "kratos",      nombre: "Kratos",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
+    { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" }
+  ],
 
   REFRESH_MIN: 5   // auto-refresh de datos (minutos)
 };

@@ -22,7 +22,20 @@
     } catch (e) { authMsg(e.message || "No se pudo entrar."); }
   }
 
+  // Barra "Mis apps": accesos a todo el ecosistema (definidos en config.APPS)
+  function renderApps() {
+    const nav = $("#apps");
+    if (!nav || !C.APPS) return;
+    nav.innerHTML = C.APPS.map(a => `
+      <a class="app-tile${a.soloPC ? " pc" : ""}" href="${a.url}" target="_blank" rel="noopener"
+         ${a.nota ? `title="${Core.esc(a.nota)}"` : ""}>
+        <span class="ico" aria-hidden="true">${a.icono}</span>
+        <span>${Core.esc(a.nombre.replace(" (PC)", ""))}${a.soloPC ? "<small>en este PC</small>" : ""}</span>
+      </a>`).join("");
+  }
+
   async function boot() {
+    renderApps();
     if (!Core.initSB()) { authMsg("No se pudo cargar Supabase."); return; }
     const sess = await Core.session();
     if (sess) {
