@@ -123,3 +123,24 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
   (app local HTML+localStorage con deploy cifrado a GitHub Pages) e
   `Inversiones\` (Flask+SQLite local en http://127.0.0.1:5613 + snapshot
   remoto en Supabase/GitHub Pages).
+
+---
+
+## Historial de cambios (mantener al día en cada sesión)
+
+### 2026-09-28 — Mi Día como puerta de entrada del ecosistema
+- **Barra "Mis apps"** bajo el clima (`#apps`, render en `js/app.js`
+  `renderApps()`, lista en `config.APPS`): Finanzas, Inversiones, Inversiones
+  local (solo PC, se oculta en celular), Kratos y Salud. Para agregar una app
+  al ecosistema basta con sumarla a `config.APPS`.
+- **Card Salud** (`js/widgets/salud.js`): solo 3 datos por decisión de Diego:
+  próximo control, último peso y última presión. Lee `data->controles` de
+  `salud_registro` y la última fila de `salud_mediciones`; no baja el registro
+  clínico completo. Contrato: `controles[] = {fecha, texto, aprox}` (lo
+  mantiene el agente de `Salud/`).
+- **Enlace de Inversiones** corregido a `https://mis-inversiones.github.io/`
+  (el anterior `portafolio-dashboard` solo redirigía).
+- Service worker `midia-v5`.
+- **Pendiente:** Diego no está conforme con el diseño oscuro; pidió rediseñarlo
+  (probablemente con el mismo estilo claro de Mi Salud; esperando su confirmación).
+

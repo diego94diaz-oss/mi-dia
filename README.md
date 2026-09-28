@@ -28,6 +28,10 @@ config pública en `js/config.js`, cero toolchain.
 | Correo | Gmail API (readonly) — urgentes de la bandeja Principal | mismo token OAuth que Agenda |
 | Clima | Open-Meteo (Lebu, Chile) | público, sin key |
 | Pendientes | tabla `tasks` (propia, CRUD) | login Supabase + RLS |
+| Salud (mínimo) | `salud_registro` (solo `data->controles`) + última fila de `salud_mediciones` | login Supabase + RLS |
+
+**Barra "Mis apps":** accesos a todo el ecosistema definidos en `config.APPS`
+(Finanzas, Inversiones, Inversiones local solo en PC, Kratos, Salud).
 
 Las tres apps comparten **un solo proyecto Supabase**, así que un único
 login desbloquea finanzas + inversiones + entrenamiento + tareas.
@@ -72,7 +76,7 @@ Al cambiar archivos del shell, subir la versión de `CACHE` en `sw.js`
   *stale-while-revalidate* por widget (localStorage), timeout por fuente y
   aislamiento de errores: **una card caída nunca tumba el resto**.
 - `js/widgets/*.js` — un archivo por card (`hero`, `finanzas`, `inversiones`,
-  `kratos`, `agenda`, `tareas`). Cada widget define `load()` (datos) y
+  `kratos`, `salud`, `agenda`, `correo`, `tareas`). Cada widget define `load()` (datos) y
   `render()` (pintado), y opcionalmente `maxAge` (p. ej. el snapshot de
   inversiones pesa ~3,5 MB y solo se re-descarga cada 30 min; ⟳ fuerza).
 - `js/app.js` — arranque, login, auto-refresh (5 min + al volver a la
