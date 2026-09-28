@@ -2,9 +2,13 @@
 //  WIDGET: Salud — datos MÍNIMOS de la app Mi Salud (decisión de
 //  Diego, 28-09-2026): próximo control, último peso y última presión.
 //  Lee del Supabase compartido:
-//   - salud_registro: SOLO data->controles (no se baja el registro
-//     clínico completo; la caché local guarda solo estos 3 datos).
+//   - salud_citas: citas reales que Diego agenda en Mi Salud (con hora).
+//   - salud_registro: SOLO data->controles (controles sugeridos por el
+//     plan; no se baja el registro clínico completo).
 //   - salud_mediciones: última fila de peso y de presión.
+//  "Próximo control" = lo más cercano entre las citas agendadas y los
+//  controles sugeridos que aún no tienen cita (control_id).
+//  La caché local guarda solo estos 3 datos.
 //  El detalle clínico vive únicamente en Mi Salud.
 // ============================================================
 (() => {
@@ -27,20 +31,27 @@
       const ultima = tipo => sb.from("salud_mediciones").select("fecha,valor,sistolica,diastolica")
         .eq("user_id", u).eq("tipo", tipo)
         .order("fecha", { ascending: false }).order("created_at", { ascending: false }).limit(1);
-      const [regRes, pesoRes, paRes] = await Promise.all([
+      const hoy = Core.todayStr();
+      const [regRes, citasRes, pesoRes, paRes] = await Promise.all([
         sb.from("salud_registro").select("controles:data->controles").eq("user_id", u).maybeSingle(),
+        sb.from("salud_citas").select("fecha,hora,titulo,lugar,control_id").eq("user_id", u),
         ultima("peso"),
         ultima("presion")
       ]);
-      for (const r of [regRes, pesoRes, paRes]) if (r.error) throw r.error;
+      for (const r of [regRes, citasRes, pesoRes, paRes]) if (r.error) throw r.error;
 
-      const hoy = Core.todayStr();
-      const controles = (regRes.data?.controles || [])
-        .filter(c => c.fecha && c.fecha >= hoy.slice(0, c.fecha.length))
-        .sort((a, b) => a.fecha.localeCompare(b.fecha));
+      const citas = citasRes.data || [];
+      const agendados = new Set(citas.map(c => c.control_id).filter(Boolean));
+      const items = [
+        ...citas.filter(c => c.fecha >= hoy).map(c => ({
+          fecha: c.fecha, texto: c.titulo, hora: c.hora ? String(c.hora).slice(0, 5) : "", lugar: c.lugar || "", aprox: false })),
+        ...(regRes.data?.controles || [])
+          .filter(c => c.fecha && c.fecha >= hoy.slice(0, c.fecha.length) && !(c.id && agendados.has(c.id)))
+          .map(c => ({ fecha: c.fecha, texto: c.texto, hora: "", lugar: "", aprox: !!c.aprox, sugerido: true }))
+      ].sort((a, b) => (a.fecha + (a.hora || "99")).localeCompare(b.fecha + (b.hora || "99")));
       const p = pesoRes.data?.[0], pa = paRes.data?.[0];
       return {
-        proximo: controles[0] ? { fecha: controles[0].fecha, texto: controles[0].texto, aprox: !!controles[0].aprox } : null,
+        proximo: items[0] || null,
         peso: p ? { valor: Number(p.valor), fecha: p.fecha } : null,
         pa: pa ? { s: pa.sistolica, d: pa.diastolica, fecha: pa.fecha } : null
       };
@@ -50,10 +61,11 @@
         ? (() => {
             const n = dias(d.proximo.fecha);
             const cuando = n === 0 ? "hoy" : n === 1 ? "mañana" : n > 0 ? `en ${n} días` : "";
+            const extra = [d.proximo.hora, d.proximo.lugar].filter(Boolean).join(" · ");
             return `<div class="list"><div class="list-item${n >= 0 && n <= 7 ? " soon" : ""}">
               <span class="grow">${Core.esc(d.proximo.texto)}</span>
               <span class="num">${d.proximo.aprox ? "~" : ""}${fmt(d.proximo.fecha)}</span></div></div>
-              ${cuando ? `<div class="small muted">Próximo control ${cuando}</div>` : ""}`;
+              <div class="small muted">${d.proximo.sugerido ? "Control sugerido (sin agendar)" : "Próxima cita"}${cuando ? ` ${cuando}` : ""}${extra ? ` · ${Core.esc(extra)}` : ""}</div>`;
           })()
         : `<div class="w-msg">Sin controles agendados.</div>`;
       el.innerHTML = `
