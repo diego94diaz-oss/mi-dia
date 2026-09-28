@@ -30,7 +30,14 @@
   }
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
+  // Momento del día → colores de la banda del saludo (css: body[data-momento])
+  function momento() {
+    const h = new Date().getHours();
+    return h >= 6 && h < 13 ? "manana" : h >= 13 && h < 20 ? "tarde" : "noche";
+  }
+
   function tickClock() {
+    document.body.dataset.momento = momento();
     const el = document.getElementById("hero-clock");
     if (el) el.textContent = new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
     const sal = document.getElementById("hero-saludo");
@@ -46,7 +53,7 @@
     async load() {
       const w = C.WEATHER;
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${w.lat}&longitude=${w.lon}` +
-        `&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code` +
+        `&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min,weather_code` +
         `&timezone=${encodeURIComponent(w.tz)}&forecast_days=1`;
       const r = await fetch(url);
       if (!r.ok) throw new Error("open-meteo " + r.status);
@@ -54,12 +61,16 @@
       return {
         temp: Math.round(d.current?.temperature_2m),
         code: d.current?.weather_code,
+        dia: d.current?.is_day !== 0,
         max: Math.round(d.daily?.temperature_2m_max?.[0]),
         min: Math.round(d.daily?.temperature_2m_min?.[0])
       };
     },
     render(el, d) {
-      const [txt, emo] = wmo(d.code);
+      let [txt, emo] = wmo(d.code);
+      // De noche, cielo despejado o poco nuboso → luna en vez de sol
+      if (d.dia === false && (d.code === 0 || d.code === 1)) emo = "🌙";
+      else if (d.dia === false && d.code === 2) emo = "☁️";
       el.innerHTML = `
         <span class="hero-emoji">${emo}</span>
         <span class="hero-temp">${d.temp}°</span>

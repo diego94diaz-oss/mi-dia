@@ -1,6 +1,6 @@
 /* Mi Día — service worker: network-first para el shell, con caché de respaldo
    para funcionar offline (los datos por-widget viven en localStorage). */
-const CACHE = "midia-v6";
+const CACHE = "midia-v7";
 const SHELL = [
   ".", "index.html", "manifest.json", "icon.svg",
   "css/styles.css",

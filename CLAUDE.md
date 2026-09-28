@@ -141,12 +141,27 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
 - **Enlace de Inversiones** corregido a `https://mis-inversiones.github.io/`
   (el anterior `portafolio-dashboard` solo redirigía).
 - Service worker `midia-v5`.
-- **Pendiente:** Diego no está conforme con el diseño oscuro; pidió rediseñarlo
-  (probablemente con el mismo estilo claro de Mi Salud; esperando su confirmación).
+- ~~Pendiente: rediseño~~ → hecho el mismo día (ver abajo).
 
 ### 2026-09-28 — Card Salud con citas reales
 - Lee también `salud_citas` (citas que Diego agenda en Mi Salud) y muestra lo
   más cercano entre esas citas (con hora y lugar) y los controles sugeridos
   que aún no tienen cita (`control_id`). Indica "Próxima cita" o "Control
   sugerido (sin agendar)". Service worker `midia-v6`.
+
+### 2026-09-28 — Rediseño (Diego: "se ve muy apagado y poco original")
+- Misma base visual que Mi Salud para que el ecosistema se vea como un solo
+  sistema: fondo cálido `#eee5d7`, tarjetas marfil `#fffbf5`, títulos con
+  serifa (Newsreader) y texto en DM Sans (Google Fonts).
+- Identidad propia: **banda del saludo cuyo color cambia con la hora**
+  (`body[data-momento]` = manana | tarde | noche, lo fija `hero.js`), con reloj
+  y clima dentro; de noche el clima despejado muestra luna (`is_day` de
+  Open-Meteo).
+- **Un tono por área** (variables `--tone*` por `#w-<id>` en `css/styles.css`):
+  Finanzas verde, Inversiones azul, Entrenamiento terracota, Agenda sol,
+  Correo rosa, Salud lavanda, Pendientes arena. La barra "Mis apps" usa los
+  mismos tonos (clase `app-<id>`, la agrega `renderApps()`).
+- Íconos de card en `<span class="h2-ico">`; ícono de la app nuevo (sol).
+  Service worker `midia-v7`.
+- Al agregar una card nueva: darle su tono en `css/styles.css` (`#w-<id> { --tone-s/--tone/--tone-i }`).
 

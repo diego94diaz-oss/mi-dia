@@ -27,7 +27,7 @@
     const nav = $("#apps");
     if (!nav || !C.APPS) return;
     nav.innerHTML = C.APPS.map(a => `
-      <a class="app-tile${a.soloPC ? " pc" : ""}" href="${a.url}" target="_blank" rel="noopener"
+      <a class="app-tile app-${a.id}${a.soloPC ? " pc" : ""}" href="${a.url}" target="_blank" rel="noopener"
          ${a.nota ? `title="${Core.esc(a.nota)}"` : ""}>
         <span class="ico" aria-hidden="true">${a.icono}</span>
         <span>${Core.esc(a.nombre.replace(" (PC)", ""))}${a.soloPC ? "<small>en este PC</small>" : ""}</span>

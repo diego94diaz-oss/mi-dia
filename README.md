@@ -8,6 +8,10 @@ sola pantalla que se abre cada mañana.
 **Es una capa de solo lectura/agregación**: no reconstruye ninguna fuente,
 lee las que ya existen. La única tabla propia es `tasks` (pendientes).
 
+## Diseño
+
+Tema cálido compartido con Mi Salud (beige + marfil, serifa Newsreader, DM Sans). La banda del saludo cambia de color según la hora y cada área tiene su tono (ver `css/styles.css`). Detalle en `CLAUDE.md` → Historial de cambios.
+
 ## Stack
 
 HTML/CSS/JS vanilla (sin build) · supabase-js@2 por CDN · Open-Meteo ·
