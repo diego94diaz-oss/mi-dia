@@ -165,3 +165,8 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
   Service worker `midia-v7`.
 - Al agregar una card nueva: darle su tono en `css/styles.css` (`#w-<id> { --tone-s/--tone/--tone-i }`).
 
+### 2026-09-28 — Barra "Mis apps" sin Inversiones local
+- Diego pidió quitar "Inversiones (en este PC)": la barra queda con Finanzas,
+  Inversiones, Kratos y Salud. El soporte `soloPC` sigue en el código por si
+  se necesita otro acceso solo para el computador. Service worker `midia-v8`.
+

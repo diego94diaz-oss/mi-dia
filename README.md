@@ -35,7 +35,7 @@ config pública en `js/config.js`, cero toolchain.
 | Salud (mínimo) | `salud_registro` (solo `data->controles`) + última fila de `salud_mediciones` | login Supabase + RLS |
 
 **Barra "Mis apps":** accesos a todo el ecosistema definidos en `config.APPS`
-(Finanzas, Inversiones, Inversiones local solo en PC, Kratos, Salud).
+(Finanzas, Inversiones, Kratos, Salud).
 
 Las tres apps comparten **un solo proyecto Supabase**, así que un único
 login desbloquea finanzas + inversiones + entrenamiento + tareas.

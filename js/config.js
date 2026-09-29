@@ -23,12 +23,10 @@ window.MIDIA_CONFIG = {
   },
 
   // Barra "Mis apps": acceso directo a todo el ecosistema.
-  // soloPC: la app corre en el computador (servidor local) → se oculta en el celular.
+  // (soloPC: true oculta un acceso en el celular; hoy ninguno lo usa.)
   APPS: [
     { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://diego94diaz-oss.github.io/finanzas-personales/" },
     { id: "inversiones", nombre: "Inversiones", icono: "📈", url: "https://mis-inversiones.github.io/" },
-    { id: "inv-local",   nombre: "Inversiones (PC)", icono: "🖥️", url: "http://127.0.0.1:5613/", soloPC: true,
-      nota: "App local para cargar movimientos. Requiere abrir iniciar.bat en la carpeta Inversiones." },
     { id: "kratos",      nombre: "Kratos",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
     { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" }
   ],
