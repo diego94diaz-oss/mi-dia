@@ -170,3 +170,20 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
   Inversiones, Kratos y Salud. El soporte `soloPC` sigue en el código por si
   se necesita otro acceso solo para el computador. Service worker `midia-v8`.
 
+
+### PENDIENTE (2026-09-28) — Google (Gmail/Calendar) siempre conectado
+- **Causa diagnosticada:** `js/google.js` usa el flujo implícito de GIS: el
+  access token dura ~1 h y la renovación silenciosa (`prompt:"none"`) abre un
+  popup que el navegador bloquea sin gesto del usuario → vuelve "Conectar Google".
+- **Plan acordado a implementar:** flujo con código de autorización
+  (`initCodeClient`, `access_type=offline`) + edge function de Supabase que
+  guarda el refresh token del lado del servidor (tabla sin acceso de cliente) y
+  entrega access tokens nuevos a Mi Día sin popups.
+- **Reusar el patrón de Inversiones** (`Inversiones/app/publish.py`:
+  `_deploy_function`, validación con `/auth/v1/user`). OJO: los secrets de
+  edge functions son GLOBALES del proyecto compartido → usar prefijo
+  `MIDIA_GOOGLE_*`.
+- **Requiere a Diego:** (1) poner el *client secret* del OAuth "mi-dia" como
+  secret en Supabase (sin pegarlo en el chat); (2) pasar la pantalla de
+  consentimiento de Google Cloud de "Prueba" a "En producción" (en modo prueba
+  los refresh tokens caducan a los 7 días).
