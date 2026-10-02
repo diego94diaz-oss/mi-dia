@@ -27,7 +27,7 @@ window.MIDIA_CONFIG = {
   APPS: [
     { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://diego94diaz-oss.github.io/finanzas-personales/" },
     { id: "inversiones", nombre: "Inversiones", icono: "📈", url: "https://mis-inversiones.github.io/" },
-    { id: "kratos",      nombre: "Kratos",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
+    { id: "kratos",      nombre: "Entrenamiento",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
     { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" }
   ],
 
