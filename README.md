@@ -87,3 +87,7 @@ Al cambiar archivos del shell, subir la versión de `CACHE` en `sw.js`
   pestaña), botón ⟳ y pull-to-refresh táctil.
 - Los widgets muestran al instante el último dato cacheado y refrescan en
   segundo plano; sin conexión, la app abre con lo último conocido.
+
+
+### 2026-10-01 — Nombres y logos del ecosistema
+Identidad actual: Mis Apps, Finanzas, Inversiones, Entrenamiento y Salud. Se integraron los PNG proporcionados por el usuario en encabezados/login, favicons, iconos PWA y accesos de Windows. Original conservado como `brand-source.png` junto a los iconos. Se conservan URLs e identificadores internos para mantener instalaciones, datos y sesiones. Caché del shell renovada.

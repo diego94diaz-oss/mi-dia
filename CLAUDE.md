@@ -187,3 +187,7 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
   secret en Supabase (sin pegarlo en el chat); (2) pasar la pantalla de
   consentimiento de Google Cloud de "Prueba" a "En producción" (en modo prueba
   los refresh tokens caducan a los 7 días).
+
+
+### 2026-10-01 — Nombres y logos del ecosistema
+Identidad actual: Mis Apps, Finanzas, Inversiones, Entrenamiento y Salud. Se integraron los PNG proporcionados por el usuario en encabezados/login, favicons, iconos PWA y accesos de Windows. Original conservado como `brand-source.png` junto a los iconos. Se conservan URLs e identificadores internos para mantener instalaciones, datos y sesiones. Caché del shell renovada.

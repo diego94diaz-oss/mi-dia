@@ -1,25 +1,32 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es-CL">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Mi Día</title>
+<title>Mis Apps</title>
 <meta name="theme-color" content="#eee5d7">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Mi Día">
+<meta name="apple-mobile-web-app-title" content="Mis Apps">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="favicon-32.png?v=20261001" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=20261001">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style id="app-branding">
+.app-brand-image{width:48px;height:48px;object-fit:contain;display:block;flex-shrink:0}
+.logo:has(.app-brand-image){width:48px;height:48px;background:none;border-radius:0;box-shadow:none;padding:0}
+.brand,.topbar-brand{display:flex;align-items:center;gap:10px}
+@media(max-width:640px){.app-brand-image,.logo:has(.app-brand-image){width:40px;height:40px}}
+</style>
 </head>
 <body>
 
 <header>
-  <div class="brand"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg></span>Mi Día</div>
+  <div class="brand"><span class="logo" aria-hidden="true"><img class="app-brand-image" src="icon-192.png" alt="" width="48" height="48"></span>Mis Apps</div>
   <div class="actions">
     <button id="btn-refresh" class="icon-btn" title="Actualizar">⟳</button>
     <button id="btn-logout" class="icon-btn" title="Cerrar sesión" style="display:none">⏻</button>
@@ -40,15 +47,15 @@
 
 <main id="grid">
   <section id="w-finanzas" class="card">
-    <h2><span class="h2-ico" aria-hidden="true">💰</span>Finanzas</h2>
+    <h2><span class="h2-ico" aria-hidden="true"><img src="icons/finanzas.png" alt=""></span>Finanzas</h2>
     <div class="card-body"></div>
   </section>
   <section id="w-inversiones" class="card">
-    <h2><span class="h2-ico" aria-hidden="true">📈</span>Inversiones</h2>
+    <h2><span class="h2-ico" aria-hidden="true"><img src="icons/inversiones.png" alt=""></span>Inversiones</h2>
     <div class="card-body"></div>
   </section>
   <section id="w-kratos" class="card">
-    <h2><span class="h2-ico" aria-hidden="true">⚔️</span>Entrenamiento</h2>
+    <h2><span class="h2-ico" aria-hidden="true"><img src="icons/kratos.png" alt=""></span>Entrenamiento</h2>
     <div class="card-body"></div>
   </section>
   <section id="w-agenda" class="card">
@@ -60,7 +67,7 @@
     <div class="card-body"></div>
   </section>
   <section id="w-salud" class="card">
-    <h2><span class="h2-ico" aria-hidden="true">🩺</span>Salud</h2>
+    <h2><span class="h2-ico" aria-hidden="true"><img src="icons/salud.png" alt=""></span>Salud</h2>
     <div class="card-body"></div>
   </section>
   <section id="w-tareas" class="card">
@@ -71,8 +78,8 @@
 
 <div id="auth-overlay">
   <div class="auth-box">
-    <h1>Mi <span style="color:var(--accent)">Día</span></h1>
-    <p>Inicia sesión con tu cuenta (la misma de Finanzas y Kratos).</p>
+    <img class="app-brand-image" src="icon-192.png" alt="" style="width:80px;height:80px;margin:0 auto 12px"><h1>Mis Apps</h1>
+    <p>Inicia sesión con tu cuenta (la misma de Finanzas y Entrenamiento).</p>
     <input id="auth-email" type="email" placeholder="Email" value="diego94diaz@gmail.com" autocomplete="username">
     <input id="auth-pass" type="password" placeholder="Contraseña" autocomplete="current-password">
     <button id="auth-btn">Entrar</button>
@@ -94,3 +101,4 @@
 <script src="js/app.js"></script>
 </body>
 </html>
+

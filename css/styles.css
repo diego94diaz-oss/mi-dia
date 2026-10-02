@@ -271,3 +271,6 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
   .card { padding: 18px; }
   .metric-big { font-size: 36px; }
 }
+
+/* Logos del ecosistema */
+.app-tile .ico{background:none;box-shadow:none;width:52px;height:52px}.app-tile .ico img{width:52px;height:52px;object-fit:contain}.h2-ico img{width:32px;height:32px;object-fit:contain}

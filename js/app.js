@@ -29,7 +29,7 @@
     nav.innerHTML = C.APPS.map(a => `
       <a class="app-tile app-${a.id}${a.soloPC ? " pc" : ""}" href="${a.url}" target="_blank" rel="noopener"
          ${a.nota ? `title="${Core.esc(a.nota)}"` : ""}>
-        <span class="ico" aria-hidden="true">${a.icono}</span>
+        <span class="ico" aria-hidden="true"><img src="icons/${a.id}.png" alt="" width="48" height="48"></span>
         <span>${Core.esc(a.nombre.replace(" (PC)", ""))}${a.soloPC ? "<small>en este PC</small>" : ""}</span>
       </a>`).join("");
   }

@@ -77,7 +77,7 @@
         </div>
         ${prs}
         <div class="card-foot"><span class="muted small">${Core.timeAgo(t)}</span>
-          <a href="${window.MIDIA_CONFIG.LINKS.kratos}" target="_blank" rel="noopener">Abrir Kratos →</a></div>`;
+          <a href="${window.MIDIA_CONFIG.LINKS.kratos}" target="_blank" rel="noopener">Abrir Entrenamiento →</a></div>`;
     }
   });
 })();
