@@ -175,7 +175,8 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
 - Barra "Mis apps" suma **Viajes** (`config.APPS`, `LINKS.viajes`, ícono `icons/viajes.png`).
 - Card **Viajes** (`js/widgets/viajes.js`, tono azul): viaje en curso o siguiente y próximo vuelo.
   Solo lectura de `tm_trips` y `tm_flights`; no lee códigos de reserva. Contrato en `DATA-SOURCES.md`.
-- Caché del shell `midia-viajes-20261030`.
+- La app vive en https://mis-viajes.github.io/ (origen propio, login aparte).
+- Caché del shell `midia-viajes-20261030b`.
 
 ### PENDIENTE (2026-09-28) — Google (Gmail/Calendar) siempre conectado
 - **Causa diagnosticada:** `js/google.js` usa el flujo implícito de GIS: el
