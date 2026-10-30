@@ -19,7 +19,8 @@ window.MIDIA_CONFIG = {
     finanzas:    "https://diego94diaz-oss.github.io/finanzas-personales/",
     inversiones: "https://mis-inversiones.github.io/",
     kratos:      "https://diego94diaz-oss.github.io/kratos-gym/",
-    salud:       "https://mi-salud.diego94diaz.workers.dev/"
+    salud:       "https://mi-salud.diego94diaz.workers.dev/",
+    viajes:      "https://diego94diaz-oss.github.io/Travel-manager/"
   },
 
   // Barra "Mis apps": acceso directo a todo el ecosistema.
@@ -28,7 +29,8 @@ window.MIDIA_CONFIG = {
     { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://diego94diaz-oss.github.io/finanzas-personales/" },
     { id: "inversiones", nombre: "Inversiones", icono: "📈", url: "https://mis-inversiones.github.io/" },
     { id: "kratos",      nombre: "Entrenamiento",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
-    { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" }
+    { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" },
+    { id: "viajes",      nombre: "Viajes",      icono: "✈️", url: "https://diego94diaz-oss.github.io/Travel-manager/" }
   ],
 
   REFRESH_MIN: 5   // auto-refresh de datos (minutos)

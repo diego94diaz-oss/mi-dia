@@ -171,6 +171,12 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
   se necesita otro acceso solo para el computador. Service worker `midia-v8`.
 
 
+### 2026-10-30 — Viajes (Travel Manager)
+- Barra "Mis apps" suma **Viajes** (`config.APPS`, `LINKS.viajes`, ícono `icons/viajes.png`).
+- Card **Viajes** (`js/widgets/viajes.js`, tono azul): viaje en curso o siguiente y próximo vuelo.
+  Solo lectura de `tm_trips` y `tm_flights`; no lee códigos de reserva. Contrato en `DATA-SOURCES.md`.
+- Caché del shell `midia-viajes-20261030`.
+
 ### PENDIENTE (2026-09-28) — Google (Gmail/Calendar) siempre conectado
 - **Causa diagnosticada:** `js/google.js` usa el flujo implícito de GIS: el
   access token dura ~1 h y la renovación silenciosa (`prompt:"none"`) abre un

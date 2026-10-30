@@ -186,3 +186,10 @@ comentado en ambos repos); ningún secreto en el repo.
   fecha, texto, aprox}`; un control con cita enlazada (`control_id`) no se
   muestra como sugerido.
 
+## Fuente 10 — Viajes (Travel Manager) — agregada 30-10-2026
+- Dueño de los datos: Travel Manager (`Viajes/`, esquema en `supabase/schema.sql`). Mi Día solo lee.
+- `js/widgets/viajes.js` consulta:
+  - `tm_trips` → `id, name, start_date, end_date`, con `status <> 'cancelado'` y `end_date >= hoy`, el de `start_date` más temprano.
+  - `tm_flights` → `airline, flight_number, origin_code, destination_code, departure_local` de ese viaje, sin cancelados. `departure_local` es texto `YYYY-MM-DDTHH:mm` en hora local del aeropuerto.
+- RLS `user_id = auth.uid()` del login compartido. No se leen códigos de reserva.
+- Si Travel Manager renombra esas columnas, hay que actualizar este widget.
