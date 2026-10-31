@@ -1,8 +1,9 @@
 // ============================================================
 //  WIDGET: Kratos — entrenamiento de hoy, racha y PRs.
 //  Lee workout_sets y exercises del Supabase compartido.
-//  Rutina de hoy = port de Logic.nextDay() de kratos-gym
-//  (rotación A/B según la última sesión registrada).
+//  Rutina de hoy = port de Logic.nextDay() de kratos-gym: rotación
+//  entre las rutinas (exercises.dia, con cualquier nombre). Las
+//  sesiones libres (rutina "Libre") no mueven la rotación.
 //  ⚠ Los sets se piden por fecha DESC: el primer item del array
 //  es la ÚLTIMA serie realizada (peculiaridad documentada).
 // ============================================================
@@ -31,9 +32,11 @@
       const fechas = [...new Set(sets.map(s => s.fecha))].sort();   // ascendente
       const lastFecha = fechas[fechas.length - 1];
 
-      // Rotación A/B (port fiel de Logic.nextDay)
-      const lastRutina = (sets.find(s => s.fecha === lastFecha) || {}).rutina;
-      const proxima = !fechas.length ? "A" : (lastRutina === "A" ? "B" : "A");
+      // Rotación entre rutinas (port fiel de Logic.nextDay)
+      const rutinas = [...new Set(exs.filter(e => e.dia).map(e => e.dia))]
+        .sort((a, b) => a.localeCompare(b, "es", { numeric: true }));
+      const ultima = sets.filter(s => rutinas.includes(s.rutina)).sort((a, b) => a.fecha.localeCompare(b.fecha)).pop();
+      const proxima = !ultima ? (rutinas[0] || "Libre") : rutinas[(rutinas.indexOf(ultima.rutina) + 1) % rutinas.length];
 
       const setsHoy = sets.filter(s => s.fecha === hoy);
       const entrenoHoy = setsHoy.length > 0;
@@ -65,7 +68,7 @@
         (d.ejerciciosHoy.length > 4 ? `<div class="small muted">+${d.ejerciciosHoy.length - 4} más</div>` : "");
       const estado = d.entrenoHoy
         ? `<div class="chip pos">✔ Ya entrenaste hoy · Rutina ${Core.esc(d.rutinaHoy || "?")} (${d.nSetsHoy} series)</div>`
-        : `<div class="metric-big" style="font-size:22px">Hoy toca Rutina ${Core.esc(d.rutinaHoy)}</div>`;
+        : `<div class="metric-big" style="font-size:22px">Hoy toca ${Core.esc(/^[A-Z]$/.test(d.rutinaHoy) ? "Rutina " + d.rutinaHoy : d.rutinaHoy)}</div>`;
       const prs = d.prs.length ? `<div class="small muted">PRs recientes: ` +
         d.prs.map(p => `${Core.esc(p.ej)} (${Math.round(p.rm)} kg 1RM est.)`).join(" · ") + `</div>` : "";
       el.innerHTML = `

@@ -76,6 +76,7 @@ Finanzas + Kratos + Inversiones. No se necesitan credenciales nuevas.
 
 - **Repo:** `diego94diaz-oss/kratos-gym` (GitHub Pages). Vanilla JS sin build,
   config en `js/config.js` (`window.KRATOS_CONFIG`). Cliente supabase-js@2.
+- **Peso actual:** vive en Mi Salud (`salud_mediciones`); `body_weight` es historial.
 - **Tablas base** (`schema.sql`): `profile`, `exercises` (rutina A/B: `dia`,
   `orden`, `series_obj`, `reps_min/max`, `rir_obj`, `incremento_kg`),
   `workout_sets` (`fecha, rutina, ejercicio, serie, reps, peso_kg, rir`),
@@ -86,9 +87,10 @@ Finanzas + Kratos + Inversiones. No se necesitan credenciales nuevas.
   - `workout_sets` del usuario (últimos ~60 días bastan) → racha de días
     entrenados (fechas distintas), última sesión, PRs recientes (1RM Epley:
     `peso × (1 + reps/30)` — portar de `js/logic.js`).
-  - Rutina de HOY = rotación A/B, port de `Logic.nextDay()` (logic.js:9): si la
-    última fecha entrenada fue rutina A → hoy toca B, y viceversa; sin
-    historial → A. Si ya hay sets con fecha de hoy → mostrar "ya entrenaste
+  - Rutina de HOY = rotación entre rutinas, port de `Logic.nextDay()`: las rutinas
+    son los valores de `exercises.dia` (cualquier nombre), en orden alfabético
+    numérico; toca la siguiente a la última hecha. `rutina = "Libre"` no mueve la
+    rotación. Sin historial → la primera. Si ya hay sets con fecha de hoy → mostrar "ya entrenaste
     (rutina X)".
   - `exercises` con `dia = rutina de hoy`, `activo = true`, orden por `orden` →
     lista de ejercicios del día.
