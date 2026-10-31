@@ -193,3 +193,4 @@ comentado en ambos repos); ningún secreto en el repo.
   - `tm_flights` → `airline, flight_number, origin_code, destination_code, departure_local` de ese viaje, sin cancelados. `departure_local` es texto `YYYY-MM-DDTHH:mm` en hora local del aeropuerto.
 - RLS `user_id = auth.uid()` del login compartido. No se leen códigos de reserva.
 - Si Travel Manager renombra esas columnas, hay que actualizar este widget.
+- Desde 2026-10-31 las políticas incluyen cuentas vinculadas (`tm_sharing`): la tarjeta también puede mostrar viajes creados por una cuenta vinculada. La consulta no filtra por `user_id`.
