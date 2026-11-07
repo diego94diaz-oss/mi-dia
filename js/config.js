@@ -16,7 +16,7 @@ window.MIDIA_CONFIG = {
 
   // Enlaces a las apps completas (los widgets los usan en su "Abrir … →")
   LINKS: {
-    finanzas:    "https://diego94diaz-oss.github.io/finanzas-personales/",
+    finanzas:    "https://finanzas.diego94diaz.workers.dev/",
     inversiones: "https://mis-inversiones.github.io/",
     kratos:      "https://diego94diaz-oss.github.io/kratos-gym/",
     salud:       "https://mi-salud.diego94diaz.workers.dev/",
@@ -26,7 +26,7 @@ window.MIDIA_CONFIG = {
   // Barra "Mis apps": acceso directo a todo el ecosistema.
   // (soloPC: true oculta un acceso en el celular; hoy ninguno lo usa.)
   APPS: [
-    { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://diego94diaz-oss.github.io/finanzas-personales/" },
+    { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://finanzas.diego94diaz.workers.dev/" },
     { id: "inversiones", nombre: "Inversiones", icono: "📈", url: "https://mis-inversiones.github.io/" },
     { id: "kratos",      nombre: "Entrenamiento",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
     { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" },
