@@ -18,19 +18,22 @@ window.MIDIA_CONFIG = {
   LINKS: {
     finanzas:    "https://finanzas.diego94diaz.workers.dev/",
     inversiones: "https://mis-inversiones.github.io/",
-    kratos:      "https://diego94diaz-oss.github.io/kratos-gym/",
+    kratos:      "https://entrenamiento.diego94diaz.workers.dev/",
     salud:       "https://mi-salud.diego94diaz.workers.dev/",
     viajes:      "https://viajes.diego94diaz.workers.dev/"
   },
 
   // Barra "Mis apps": acceso directo a todo el ecosistema.
-  // (soloPC: true oculta un acceso en el celular; hoy ninguno lo usa.)
+  // (soloPC: true oculta un acceso en el celular; hoy ninguno lo usa. Con sesión, los accesos abren
+  //  cada app ya con sesión vía portafolio-sso, salvo los marcados sso: false.)
   APPS: [
     { id: "finanzas",    nombre: "Finanzas",    icono: "💰", url: "https://finanzas.diego94diaz.workers.dev/" },
     { id: "inversiones", nombre: "Inversiones", icono: "📈", url: "https://mis-inversiones.github.io/" },
-    { id: "kratos",      nombre: "Entrenamiento",      icono: "⚔️", url: "https://diego94diaz-oss.github.io/kratos-gym/" },
+    { id: "kratos",      nombre: "Entrenamiento",      icono: "⚔️", url: "https://entrenamiento.diego94diaz.workers.dev/" },
     { id: "salud",       nombre: "Salud",       icono: "🩺", url: "https://mi-salud.diego94diaz.workers.dev/" },
-    { id: "viajes",      nombre: "Viajes",      icono: "✈️", url: "https://viajes.diego94diaz.workers.dev/" }
+    { id: "viajes",      nombre: "Viajes",      icono: "✈️", url: "https://viajes.diego94diaz.workers.dev/" },
+    // Sin login propio (sso: false): se abre directo, sin pedir código de sesión.
+    { id: "calculadora", nombre: "Calculadora", icono: "🧮", url: "https://calculadora.diego94diaz.workers.dev/", sso: false }
   ],
 
   REFRESH_MIN: 5   // auto-refresh de datos (minutos)

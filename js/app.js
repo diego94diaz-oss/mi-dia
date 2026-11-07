@@ -27,16 +27,29 @@
     const nav = $("#apps");
     if (!nav || !C.APPS) return;
     nav.innerHTML = C.APPS.map(a => `
-      <a class="app-tile app-${a.id}${a.soloPC ? " pc" : ""}" href="${a.url}" target="_blank" rel="noopener"
+      <a class="app-tile app-${a.id}${a.soloPC ? " pc" : ""}" href="${a.url}" target="_blank" rel="noopener"${a.sso === false ? "" : ` data-app="${a.id}"`}
          ${a.nota ? `title="${Core.esc(a.nota)}"` : ""}>
         <span class="ico" aria-hidden="true"><img src="icons/${a.id}.png" alt="" width="48" height="48"></span>
         <span>${Core.esc(a.nombre.replace(" (PC)", ""))}${a.soloPC ? "<small>en este PC</small>" : ""}</span>
       </a>`).join("");
+    // Con sesión iniciada, cada acceso abre la app YA con sesión (código de un solo uso de
+    // portafolio-sso; cada app queda con su propia sesión). Si falla, abre la app normal (con login).
+    nav.addEventListener("click", async e => {
+      const a = e.target.closest("a[data-app]");
+      if (!a || !Core.user()) return;
+      e.preventDefault();
+      const ventana = window.open("", "_blank");   // se abre ya: si se espera la respuesta, el navegador la bloquea
+      if (ventana) ventana.opener = null;
+      let url = a.href;
+      try { url = (await Core.enlaceConSesion(a.dataset.app)) || a.href; } catch (err) { console.warn("sso", err); }
+      if (ventana) ventana.location.href = url; else location.href = url;
+    });
   }
 
   async function boot() {
     renderApps();
     if (!Core.initSB()) { authMsg("No se pudo cargar Supabase."); return; }
+    await Core.canjearSSO();
     const sess = await Core.session();
     if (sess) {
       $("#auth-overlay").style.display = "none";

@@ -13,6 +13,29 @@ const Core = (() => {
     sb = window.supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY);
     return sb;
   }
+  // Salto con sesión desde otra app (#sso=<código de un solo uso> de portafolio-sso), desde 2026-11-07.
+  async function canjearSSO() {
+    const m = location.hash.match(/^#sso=([^&]+)/);
+    if (!m || !sb) return;
+    history.replaceState(null, "", location.pathname + location.search);
+    const token_hash = decodeURIComponent(m[1]);
+    let { error } = await sb.auth.verifyOtp({ token_hash, type: "magiclink" });
+    if (error) ({ error } = await sb.auth.verifyOtp({ token_hash, type: "email" }));
+    if (error) console.warn("No se pudo entrar con el salto de sesión:", error.message);
+  }
+  // Pide a portafolio-sso un enlace con código de un solo uso para abrir otra app ya con sesión.
+  async function enlaceConSesion(destino) {
+    const { data } = await sb.auth.getSession();
+    const token = data?.session?.access_token;
+    if (!token) return null;
+    const r = await fetch(C.SUPABASE_URL + "/functions/v1/portafolio-sso", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + token, apikey: C.SUPABASE_ANON_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ destino })
+    });
+    const out = await r.json().catch(() => ({}));
+    return r.ok && out.url ? out.url : null;
+  }
   async function session() {
     if (!sb) return null;
     const { data } = await sb.auth.getSession();
@@ -25,7 +48,16 @@ const Core = (() => {
     user = data.user;
     return user;
   }
-  async function signOut() { if (sb) await sb.auth.signOut(); user = null; location.reload(); }
+  // Cerrar sesión borra también lo guardado en este navegador: caché de widgets
+  // (montos, peso, presión, asuntos de correos) y el token de Google.
+  async function signOut() {
+    if (sb) await sb.auth.signOut();
+    user = null;
+    try {
+      Object.keys(localStorage).filter(k => k.startsWith("midia_")).forEach(k => localStorage.removeItem(k));
+    } catch (e) {}
+    location.reload();
+  }
   const uid = () => user?.id || null;
 
   // Lee una tabla completa paginando (PostgREST corta en 1000 filas por request).
@@ -115,7 +147,7 @@ const Core = (() => {
     return `hace ${Math.round(h / 24)} días`;
   }
 
-  return { initSB, session, signIn, signOut, uid, fetchAll,
+  return { initSB, canjearSSO, enlaceConSesion, session, signIn, signOut, uid, fetchAll,
            register, runWidget, refreshOne, refreshAll,
            sb: () => sb, user: () => user,
            clp, pct, todayStr, monthKey, esc, timeAgo, cacheGet };

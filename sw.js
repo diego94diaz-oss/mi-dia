@@ -1,14 +1,16 @@
-/* Mi Día — service worker: network-first para el shell, con caché de respaldo
-   para funcionar offline (los datos por-widget viven en localStorage). */
-const CACHE = "midia-iconos-20261107";
+/* Mis Apps — service worker.
+   Desde 2026-11-07: «caché primero y actualizar en segundo plano» (stale-while-revalidate)
+   para el shell: abre al instante aunque la señal sea mala, y la versión nueva queda lista
+   para la próxima apertura. Los datos de cada widget viven en localStorage y siempre van a la red. */
+const CACHE = "misapps-swr-20261107";
 const SHELL = [
-  ".", "index.html", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png",
-  "css/styles.css", "icons/finanzas.png", "icons/inversiones.png", "icons/kratos.png", "icons/salud.png", "icons/viajes.png",
+  ".", "index.html", "manifest.json", "icon-192.png", "icon-512.png",
+  "css/styles.css", "icons/finanzas.png", "icons/inversiones.png", "icons/kratos.png", "icons/salud.png", "icons/viajes.png", "icons/calculadora.png",
+  "vendor/supabase-2.118.0.js",
   "js/config.js", "js/core.js", "js/google.js", "js/app.js",
   "js/widgets/hero.js", "js/widgets/finanzas.js", "js/widgets/inversiones.js",
   "js/widgets/kratos.js", "js/widgets/salud.js", "js/widgets/viajes.js", "js/widgets/agenda.js", "js/widgets/correo.js",
-  "js/widgets/tareas.js",
-  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"
+  "js/widgets/tareas.js"
 ];
 
 self.addEventListener("install", e => {
@@ -20,16 +22,17 @@ self.addEventListener("activate", e => {
   ).then(() => self.clients.claim()));
 });
 self.addEventListener("fetch", e => {
-  const url = new URL(e.request.url);
   if (e.request.method !== "GET") return;
-  // Datos (Supabase, Open-Meteo, Google) siempre van a la red, sin caché del SW.
-  if (url.hostname.endsWith("supabase.co") || url.hostname.includes("open-meteo") ||
-      url.hostname.includes("googleapis") || url.hostname.includes("accounts.google")) return;
-  e.respondWith(
-    fetch(e.request).then(r => {
-      const copy = r.clone();
-      caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
+  const url = new URL(e.request.url);
+  // Solo el shell propio pasa por la caché; Supabase, Google, clima y fuentes van directo a la red.
+  if (url.origin !== location.origin) return;
+  e.respondWith(caches.open(CACHE).then(async cache => {
+    const guardada = await cache.match(e.request, { ignoreSearch: true });
+    const red = fetch(e.request, { cache: "no-store" }).then(r => {
+      if (r.ok) cache.put(e.request, r.clone());
       return r;
-    }).catch(() => caches.match(e.request, { ignoreSearch: true }))
-  );
+    }).catch(() => null);
+    if (guardada) { e.waitUntil(red); return guardada; }
+    return (await red) || (await cache.match("index.html")) || Response.error();
+  }));
 });

@@ -15,7 +15,7 @@ Tema cálido compartido con Mi Salud (beige + marfil, serifa Newsreader, DM Sans
 ## Stack
 
 HTML/CSS/JS vanilla (sin build) · supabase-js@2 por CDN · Open-Meteo ·
-Google Identity Services + Calendar API · GitHub Pages · PWA
+Google Identity Services + Calendar API · Cloudflare Workers · PWA
 (manifest + service worker, instalable, funciona offline con datos cacheados).
 
 Mismo patrón que `finanzas-personales` y `kratos-gym`: un `index.html`,
@@ -48,7 +48,7 @@ Todo vive en `js/config.js`:
   diseño; los datos se protegen con Row Level Security + login).
 - `GOOGLE_CLIENT_ID` — OAuth Client ID de Google Cloud (Calendar readonly).
   Orígenes autorizados: `http://127.0.0.1:8742` y
-  `https://diego94diaz-oss.github.io`.
+  `https://mis-apps.diego94diaz.workers.dev`.
 - `WEATHER` — coordenadas y zona horaria del clima.
 - `LINKS` — enlaces "abrir app completa" de cada card.
 - `REFRESH_MIN` — auto-refresh de datos (minutos).
@@ -68,11 +68,11 @@ python -m http.server 8742
 
 ## Deploy
 
-GitHub Pages del repo `diego94diaz-oss/mi-dia` (branch `main`, root):
-https://diego94diaz-oss.github.io/mi-dia/
+Cloudflare Workers (Worker `mis-apps`): desde esta carpeta `npx wrangler deploy`.
+https://mis-apps.diego94diaz.workers.dev/ (GitHub Pages de `mi-dia` sigue sirviendo la dirección antigua).
 
 Al cambiar archivos del shell, subir la versión de `CACHE` en `sw.js`
-(`midia-vN`) para que los clientes instalados actualicen.
+para que los clientes instalados actualicen.
 
 ## Arquitectura
 

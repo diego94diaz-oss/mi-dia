@@ -1,130 +1,46 @@
-# CLAUDE.md — "Mi Día": Dashboard Personal Unificado
+# CLAUDE.md — Mis Apps (antes «Mi Día»): dashboard y puerta de entrada del ecosistema
 
-## Rol y objetivo
-Eres un ingeniero full-stack senior. Vas a construir desde cero una PWA
-llamada **"Mi Día"**: un dashboard personal unificado que reúne en una sola
-pantalla la información que hoy vive dispersa en varias apps del usuario.
-Es el "home base" que el usuario abre cada mañana.
+> Reglas globales y mapa del ecosistema: `../CLAUDE.md` y `../memory.md`. Fuentes de datos y contratos: `DATA-SOURCES.md`.
+> (El prompt inicial con el que se construyó la app en 2026-09 se reemplazó el 2026-11-07 por esta descripción del
+> estado real; el original está en el historial de git.)
 
-Prioridad: **reutilizar las fuentes de datos existentes**, no reconstruirlas.
-Esta app es una capa de lectura/agregación por encima de sistemas que ya
-funcionan.
+## Qué es
 
-## Contexto del usuario
-Diego ya tiene 3 apps funcionales en producción:
-1. **Finanzas personales** — repo `diego94diaz-oss/finanzas-personales`,
-   backend Supabase (Postgres).
-2. **Inversiones** — app de seguimiento de portafolio/inversiones.
-3. **Kratos Gym** — PWA de entrenamiento, repo `diego94diaz-oss/kratos-gym`,
-   GitHub Pages + Supabase.
+PWA vanilla JS (sin build) que Diego abre cada mañana: saludo + clima, cards de Finanzas, Inversiones, Entrenamiento,
+Agenda (Google Calendar), Correo (Gmail), Salud (solo 3 datos), Viajes y Pendientes (tabla `tasks`), y la barra
+«Mis apps» con acceso a todo el ecosistema. Es una capa de **solo lectura** sobre las otras apps (salvo `tasks`).
 
-Además tiene conectados:
-- **Google Calendar** (vía cuenta diego94diaz@gmail.com).
-- **Clima** (API pública tipo Open-Meteo / wttr.in).
-- (Opcional) **Home Assistant** local para estado de luces/hogar.
+- **Producción:** https://mis-apps.diego94diaz.workers.dev/ (Cloudflare Workers, Worker `mis-apps`, desde 2026-11-07).
+  La dirección antigua `diego94diaz-oss.github.io/mi-dia/` sigue funcionando (GitHub Pages publica el mismo repo) hasta que Diego decida.
+- **Repo:** `diego94diaz-oss/mi-dia` (público). Pendiente de decisión de Diego: pasarlo a un repo privado y dejar en GitHub Pages solo una redirección.
+- **Publicar:** desde esta carpeta, `npx wrangler deploy` (assets estáticos; `.assetsignore` excluye docs y `brand-source.png`).
+  Si en el panel de Cloudflare se conecta el repo (Workers Builds), cada push a `main` publica solo.
 
-## FASE 0 — Descubrimiento (obligatoria antes de escribir features)
-Antes de construir, DEBES:
-1. Clonar/inspeccionar los repos `finanzas-personales` y `kratos-gym`.
-2. Leer sus esquemas reales de Supabase (tablas, columnas, RLS, vistas) y
-   sus clientes/queries existentes. **No asumas nombres de tablas.**
-3. Identificar cómo cada app expone su cliente Supabase (URL + anon key) y
-   qué credenciales ya existen.
-4. Ubicar la fuente de datos de inversiones y su forma de acceso.
-5. Documentar en un archivo `DATA-SOURCES.md` qué encontraste: cada fuente,
-   cómo se accede, qué datos relevantes para el dashboard expone y qué
-   consulta usarás.
+## Arquitectura
 
-Si algo no está claro o falta una credencial/endpoint, **pregunta antes de
-inventar**.
+| Pieza | Dónde |
+|---|---|
+| Configuración (Supabase publicable, Client ID de Google, clima, enlaces, barra de apps) | `js/config.js` |
+| Cliente Supabase, caché por widget (stale-while-revalidate en `localStorage`, prefijo `midia_`), login, salto con sesión | `js/core.js` |
+| Token de Google (Calendar readonly + **Gmail metadata**) | `js/google.js` |
+| Un archivo por card | `js/widgets/*.js` |
+| Arranque, login, barra «Mis apps» | `js/app.js` |
+| supabase-js con versión fija (no CDN) | `vendor/supabase-2.118.0.js` |
+| Service worker: caché primero y actualización en segundo plano | `sw.js` (subir `CACHE` al cambiar el shell) |
+| Encabezados de seguridad (CSP) | `_headers` (si se agrega un servicio externo, sumarlo ahí) |
 
-## Stack técnico
-- **Frontend:** PWA (instalable, offline-first básico). Vanilla JS + Vite, o
-  React ligero — elige lo que mejor calce con el estilo de las apps existentes
-  del usuario para mantener consistencia. Revisa qué usan finanzas y kratos-gym
-  y alinéate.
-- **Datos:** clientes Supabase (uno por proyecto si son proyectos distintos),
-  Google Calendar API, API de clima.
-- **Hosting:** GitHub Pages (mismo patrón que kratos-gym).
-- **Estilo:** mobile-first, dark mode por defecto, carga rápida.
+## Reglas
 
-## Funcionalidades (widgets del dashboard)
-Cada bloque es una "card" independiente, con estado de carga y manejo de error
-propio (si una fuente falla, el resto del dashboard sigue funcionando).
-
-1. **Saludo + fecha/hora + clima**
-   - Saludo según hora del día, fecha completa, clima actual y máx/mín del día.
-
-2. **Finanzas — resumen del día**
-   - Saldo actual total, variación vs. ayer, gasto acumulado del mes vs.
-     presupuesto. Datos desde el Supabase de finanzas.
-
-3. **Inversiones — snapshot del portafolio**
-   - Valor total del portafolio, variación % del día, top movers.
-   - Enlace a la app completa para el detalle.
-
-4. **Entrenamiento de hoy (Kratos)**
-   - Rutina/entreno del día, o "descanso" si toca. Últimos PRs o racha de días
-     entrenados. Datos desde el Supabase de kratos-gym.
-   - NOTA: en gymdb las series vienen en orden inverso (el primer item del array
-     = última serie realizada). Ten cuidado al mostrar "última serie".
-
-5. **Agenda — próximos eventos**
-   - Próximos 3-5 eventos de Google Calendar de hoy/mañana, con hora y título.
-   - Destacar si hay un evento en menos de 2 horas.
-
-6. **Pendientes / tareas del día**
-   - Lista simple de tareas. Si no hay backend de tareas existente, crea una
-     tabla mínima en Supabase (`tasks`: id, texto, done, due, created_at).
-     CRUD básico: agregar, marcar hecha, borrar.
-
-7. **(Opcional) Hogar**
-   - Estado de luces vía Home Assistant si está disponible; si no, omitir la
-     card sin romper nada.
-
-## Requisitos técnicos
-- **Seguridad:** las credenciales (Supabase anon keys, tokens) NO se hardcodean
-  en el repo público. Usa variables de entorno / archivo de config ignorado por
-  git (`.env`, `config.local.js`) y documenta el setup en el README. Respeta el
-  RLS existente de cada Supabase; no expongas service_role keys en el cliente.
-- **Rendimiento:** carga inicial < 2s. Cachea respuestas (localStorage/IndexedDB)
-  y muestra datos cacheados mientras refresca en background.
-- **Resiliencia:** cada widget maneja su propio loading/error. Timeout por
-  fuente. Un fallo aislado nunca deja la pantalla en blanco.
-- **PWA:** manifest + service worker, instalable en móvil, ícono propio,
-  funciona con datos cacheados sin conexión.
-- **Responsivo:** diseño en grid que se adapta de 1 columna (móvil) a
-  multi-columna (desktop).
-- **Auto-refresh:** refresco automático de datos cada X minutos y pull-to-refresh
-  manual.
-
-## Entregables
-1. `DATA-SOURCES.md` con el descubrimiento de la Fase 0.
-2. App funcional en un repo nuevo (`diego94diaz-oss/mi-dia` o similar).
-3. `README.md` con setup, configuración de credenciales y despliegue a
-   GitHub Pages.
-4. Deploy funcionando en GitHub Pages.
-5. Manifest + service worker (PWA instalable).
-
-## Modo de trabajo
-- Trabaja en fases: Fase 0 (descubrimiento) → esqueleto + 1 widget end-to-end
-  (finanzas) para validar el patrón → resto de widgets → PWA/pulido → deploy.
-- Al terminar cada fase, muestra el estado y confirma antes de seguir.
-- Prioriza que algo funcione end-to-end temprano por sobre construir todo a la
-  vez.
-- Estilo de código: consistente con las apps existentes del usuario.
-
----
-
-## Notas de descubrimiento (se actualiza durante el desarrollo)
-
-- El detalle de fuentes de datos vive en `DATA-SOURCES.md` (entregable Fase 0).
-- Apps hermanas locales en `c:\Users\PC\Desktop\Claude\`: `Finanzas Personales\`
-  (app local HTML+localStorage con deploy cifrado a GitHub Pages) e
-  `Inversiones\` (Flask+SQLite local en http://127.0.0.1:5613 + snapshot
-  remoto en Supabase/GitHub Pages).
-
----
+- **Login único (desde 2026-11-07):** con sesión iniciada, cada acceso de la barra pide a la función `portafolio-sso`
+  (Inversiones, `app/publish.py`, `SSO_DESTINOS`) un enlace con código de un solo uso y abre la app ya con sesión.
+  Las apps destino lo canjean con `verifyOtp` (`#sso=`). Accesos con `sso: false` (Calculadora) se abren directo.
+  Al agregar una app con login: sumar su destino en `SSO_DESTINOS`, redesplegar la función y agregar el canje en esa app.
+- **Gmail con permiso `gmail.metadata`:** solo remitente, asunto, fecha y etiquetas; ese permiso no admite `q=`, por eso
+  `correo.js` filtra por etiquetas (`INBOX` + `CATEGORY_PERSONAL`) y la fecha en el navegador. No volver a `gmail.readonly`.
+- **Cerrar sesión** borra toda la caché `midia_*` (montos, peso, presión, asuntos) y el token de Google.
+- **Salud:** solo 3 datos mínimos (ADR-004). No leer el registro clínico completo.
+- **Google Cloud:** el Client ID «mi-dia» debe tener como origen autorizado `https://mis-apps.diego94diaz.workers.dev`.
+- No hay secretos en el repo (la clave de Supabase es la publicable).
 
 ## Historial de cambios (mantener al día en cada sesión)
 
@@ -214,3 +130,12 @@ La card de agenda (`index.html`, `#w-agenda`) se titula ahora «Agenda de hoy».
 - **2026-11-07 — Ícono nuevo:** Violeta, cuatro bloques, con una misma línea visual que el resto del ecosistema y color propio (ver `Desktop\Claude\iconos\README.md`). Se regenera con `python iconos/generar_iconos.py` desde la raíz; no editar los PNG a mano. Los accesos de la barra `icons/*.png` usan el ícono nuevo de cada app. Caché del SW: `midia-iconos-20261107`.
 
 - **2026-11-07 — respaldo semanal (desde 2026-11-07): `Desktop\Claude\respaldo-supabase.py` copia al PC todas las tablas con columna `user_id` (y `tm_sharing`). **Una tabla personal nueva entra sola si tiene `user_id`**; si no lo tiene, agregarla a `TABLAS_EXTRA` del script. Detalle en `memory.md` de la raíz («Respaldo de datos»). Incluye la tabla `tasks`.
+
+### 2026-11-07 — Mudanza a Cloudflare, login único y seguridad
+- Publicada en **https://mis-apps.diego94diaz.workers.dev/** con `_headers` (CSP). El repo sigue siendo `mi-dia` (público) y
+  GitHub Pages sigue sirviendo la dirección antigua: el paso a repo privado quedó para que lo apruebe Diego.
+- Barra «Mis apps»: abre cada app con sesión (portafolio-sso) y suma la **Calculadora** (`icons/calculadora.png`).
+- Gmail pasa a `gmail.metadata` (hay que volver a pulsar «Conectar Google» una vez). Cerrar sesión limpia la caché.
+- supabase-js propio en `vendor/`; SW con caché primero (`misapps-swr-20261107`).
+- **Falta (Diego):** en Google Cloud → Credenciales → Client ID «mi-dia», agregar el origen
+  `https://mis-apps.diego94diaz.workers.dev`; sin eso Agenda y Correo no conectan en la dirección nueva.

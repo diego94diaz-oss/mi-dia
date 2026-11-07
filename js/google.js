@@ -1,15 +1,18 @@
 // ============================================================
 //  GOOGLE — token OAuth compartido (Google Identity Services)
 //  para las cards Agenda (Calendar readonly) y Correo (Gmail
-//  readonly). Un solo consentimiento cubre ambos scopes.
+//  metadata: solo encabezados y etiquetas, NUNCA el cuerpo de los
+//  correos; desde 2026-11-07, antes gmail.readonly). Un solo
+//  consentimiento cubre ambos scopes.
 //  El access token (~1 h) se cachea en localStorage.
 // ============================================================
 const MiDiaGoogle = (() => {
   const C = window.MIDIA_CONFIG;
   const SCOPES = "https://www.googleapis.com/auth/calendar.readonly " +
-                 "https://www.googleapis.com/auth/gmail.readonly";
-  const TK = "midia_g_token";
-  try { localStorage.removeItem("midia_gcal_token"); } catch (e) {}   // clave vieja (solo calendar)
+                 "https://www.googleapis.com/auth/gmail.metadata";
+  const TK = "midia_g_token_v2";
+  // claves viejas: solo calendar, y la de gmail.readonly (permiso más amplio que ya no se pide)
+  try { localStorage.removeItem("midia_gcal_token"); localStorage.removeItem("midia_g_token"); } catch (e) {}
 
   let gisReady = null;
   function loadGIS() {

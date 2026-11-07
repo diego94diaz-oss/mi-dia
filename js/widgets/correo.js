@@ -1,7 +1,9 @@
 // ============================================================
 //  WIDGET: Correo — los correos más urgentes de responder o
-//  accionar. Gmail API readonly directo desde el navegador
-//  (token compartido MiDiaGoogle). Solo bandeja Principal,
+//  accionar. Gmail API con permiso gmail.metadata (solo remitente,
+//  asunto, fecha y etiquetas; ese permiso no admite búsquedas `q=`,
+//  por eso se filtra por etiquetas y la fecha se revisa aquí).
+//  Token compartido MiDiaGoogle. Solo bandeja Principal,
 //  últimos 7 días; urgencia por heurística:
 //    ⭐ STARRED +3 · IMPORTANT +2 · UNREAD +2
 // ============================================================
@@ -30,8 +32,7 @@
       let list;
       try {
         list = await MiDiaGoogle.gfetch(
-          GM + "/messages?q=" + encodeURIComponent("in:inbox category:primary newer_than:7d") +
-          "&maxResults=25", false);
+          GM + "/messages?labelIds=INBOX&labelIds=CATEGORY_PERSONAL&maxResults=25", false);
       } catch (e) { return { connect: true }; }
 
       const ids = (list.messages || []).slice(0, 15).map(m => m.id);
@@ -40,7 +41,8 @@
           "&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date", false)
           .catch(() => null)));
 
-      const mails = metas.filter(Boolean).map(m => {
+      const desde = Date.now() - 7 * 86400000;
+      const mails = metas.filter(m => m && Number(m.internalDate || 0) >= desde).map(m => {
         const H = Object.fromEntries((m.payload?.headers || []).map(h => [h.name, h.value]));
         const labels = m.labelIds || [];
         let score = 0;
