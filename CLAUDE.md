@@ -201,3 +201,6 @@ Identidad actual: Mis Apps, Finanzas, Inversiones, Entrenamiento y Salud. Se int
 
 ### 2026-11-07 — Carpeta renombrada «Mi Día» → «Mis Apps»
 Pedido de Diego. Solo cambió la carpeta local y las rutas en los docs del ecosistema; la URL `diego94diaz-oss.github.io/mi-dia`, el repo `mi-dia` y los identificadores internos se mantienen.
+
+### 2026-11-07 — Finanzas cambió de dirección
+Finanzas se mudó a Cloudflare: el enlace de la barra (`js/config.js`) apunta ahora a https://finanzas.diego94diaz.workers.dev/. Caché del shell `midia-finanzas-cf-20261107`. Las tablas `fin_*` que lee el widget no cambiaron.

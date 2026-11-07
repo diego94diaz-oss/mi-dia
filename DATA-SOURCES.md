@@ -23,7 +23,7 @@ Finanzas + Kratos + Inversiones. No se necesitan credenciales nuevas.
 
 ## Fuente 1 — Finanzas personales
 
-- **Repo/produción:** `diego94diaz-oss/finanzas-personales` (GitHub Pages).
+- **Repo/producción:** desde 2026-11-07 repo privado `diego94diaz-oss/finanzas`, publicado en Cloudflare: https://finanzas.diego94diaz.workers.dev/ (antes `finanzas-personales` en GitHub Pages).
   Vanilla JS, sin build, un solo `index.html`. Cliente: `supabase-js@2` por CDN,
   config en `window.FIN_CONFIG` (inline en el head).
 - **Tablas** (patrón documento: cada fila es `{user_id uuid, id text, data jsonb}`,
