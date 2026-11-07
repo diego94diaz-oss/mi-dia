@@ -204,3 +204,6 @@ Pedido de Diego. Solo cambió la carpeta local y las rutas en los docs del ecosi
 
 ### 2026-11-07 — Finanzas cambió de dirección
 Finanzas se mudó a Cloudflare: el enlace de la barra (`js/config.js`) apunta ahora a https://finanzas.diego94diaz.workers.dev/. Caché del shell `midia-finanzas-cf-20261107`. Las tablas `fin_*` que lee el widget no cambiaron.
+
+### 2026-11-07 — Viajes cambió de dirección
+El enlace de Viajes en `js/config.js` apunta a https://viajes.diego94diaz.workers.dev/ (Cloudflare). Caché del shell `midia-viajes-cf-20261107`. Las tablas `tm_*` que lee el widget no cambiaron.
