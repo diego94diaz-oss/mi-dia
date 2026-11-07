@@ -197,7 +197,7 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
 
 
 ### 2026-10-01 — Nombres y logos del ecosistema
-Identidad actual: Mis Apps, Finanzas, Inversiones, Entrenamiento y Salud. Se integraron los PNG proporcionados por el usuario en encabezados/login, favicons, iconos PWA y accesos de Windows. Original conservado como `brand-source.png` junto a los iconos. Se conservan URLs e identificadores internos para mantener instalaciones, datos y sesiones. Caché del shell renovada.
+Identidad actual (2026-11-07): íconos vectoriales con una misma línea visual (cuadrado redondeado, degradado del tono de la app, glifo blanco con sombra) y un color distinto por app: Mis Apps violeta, Inversiones azul, Viajes turquesa, Finanzas verde, Calculadora ámbar, Entrenamiento naranja y Salud rosa. Se generan con `iconos/generar_iconos.py` en la raíz del ecosistema (`Desktop\Claude\iconos\`, ver su README): no editar los PNG a mano. El logo 3D anterior queda en el historial de git. Se conservan URLs e identificadores internos para mantener instalaciones, datos y sesiones.
 
 ### 2026-11-07 — Carpeta renombrada «Mi Día» → «Mis Apps»
 Pedido de Diego. Solo cambió la carpeta local y las rutas en los docs del ecosistema; la URL `diego94diaz-oss.github.io/mi-dia`, el repo `mi-dia` y los identificadores internos se mantienen.
@@ -210,3 +210,5 @@ El enlace de Viajes en `js/config.js` apunta a https://viajes.diego94diaz.worker
 
 ### 2026-11-07 — Título de la card Agenda
 La card de agenda (`index.html`, `#w-agenda`) se titula ahora «Agenda de hoy». Caché del shell `midia-agenda-titulo-20261107`.
+
+- **2026-11-07 — Ícono nuevo:** Violeta, cuatro bloques, con una misma línea visual que el resto del ecosistema y color propio (ver `Desktop\Claude\iconos\README.md`). Se regenera con `python iconos/generar_iconos.py` desde la raíz; no editar los PNG a mano. Los accesos de la barra `icons/*.png` usan el ícono nuevo de cada app. Caché del SW: `midia-iconos-20261107`.
