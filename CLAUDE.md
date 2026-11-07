@@ -198,3 +198,6 @@ propio (si una fuente falla, el resto del dashboard sigue funcionando).
 
 ### 2026-10-01 — Nombres y logos del ecosistema
 Identidad actual: Mis Apps, Finanzas, Inversiones, Entrenamiento y Salud. Se integraron los PNG proporcionados por el usuario en encabezados/login, favicons, iconos PWA y accesos de Windows. Original conservado como `brand-source.png` junto a los iconos. Se conservan URLs e identificadores internos para mantener instalaciones, datos y sesiones. Caché del shell renovada.
+
+### 2026-11-07 — Carpeta renombrada «Mi Día» → «Mis Apps»
+Pedido de Diego. Solo cambió la carpeta local y las rutas en los docs del ecosistema; la URL `diego94diaz-oss.github.io/mi-dia`, el repo `mi-dia` y los identificadores internos se mantienen.
