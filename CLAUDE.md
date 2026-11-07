@@ -212,3 +212,5 @@ El enlace de Viajes en `js/config.js` apunta a https://viajes.diego94diaz.worker
 La card de agenda (`index.html`, `#w-agenda`) se titula ahora «Agenda de hoy». Caché del shell `midia-agenda-titulo-20261107`.
 
 - **2026-11-07 — Ícono nuevo:** Violeta, cuatro bloques, con una misma línea visual que el resto del ecosistema y color propio (ver `Desktop\Claude\iconos\README.md`). Se regenera con `python iconos/generar_iconos.py` desde la raíz; no editar los PNG a mano. Los accesos de la barra `icons/*.png` usan el ícono nuevo de cada app. Caché del SW: `midia-iconos-20261107`.
+
+- **2026-11-07 — respaldo semanal (desde 2026-11-07): `Desktop\Claude\respaldo-supabase.py` copia al PC todas las tablas con columna `user_id` (y `tm_sharing`). **Una tabla personal nueva entra sola si tiene `user_id`**; si no lo tiene, agregarla a `TABLAS_EXTRA` del script. Detalle en `memory.md` de la raíz («Respaldo de datos»). Incluye la tabla `tasks`.
